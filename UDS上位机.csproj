@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F37F002D-E940-4D71-B37F-FC2FF2A8E64E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>UDS上位机</RootNamespace>
+    <AssemblyName>UDS上位机</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="canlibCLSNET, Version=8.20.814.1, Culture=neutral, PublicKeyToken=bb7f2cd46200de24, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\canlibCLSNET.dll</HintPath>
+    </Reference>
+    <Reference Include="kvrlibCLSNET, Version=8.20.814.1, Culture=neutral, PublicKeyToken=6cef92940d4d473f, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\UDS上位机\dll\kvrlibCLSNET.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="vxlapi_NET, Version=11.0.14.22309, Culture=neutral, PublicKeyToken=9b9ef2c94571ded1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\UDS上位机\dll\vxlapi_NET.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="bootloader\BootLoader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="bootloader\CRC32.cs" />
+    <Compile Include="bootloader\ParseFile.cs" />
+    <Compile Include="CANPAI\CANAPI.cs" />
+    <Compile Include="driver\Kvaser\Kvaser.cs" />
+    <Compile Include="driver\USBCAN\USBCAN.cs" />
+    <Compile Include="driver\VN1600\VN1600.cs" />
+    <Compile Include="driver\Vspy\icsNeoClass.cs" />
+    <Compile Include="driver\Vspy\Vspy.cs" />
+    <Compile Include="Form2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form2.Designer.cs">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form2.resx">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="app.manifest" />
+    <None Include="driver\USBCAN\kerneldlls\kerneldll.ini" />
+    <None Include="driver\VN1600\vxlapi.lib" />
+    <None Include="driver\VN1600\vxlapi64.lib" />
+    <None Include="driver\VN1600\XL_Driver_Library_Manual_EN.pdf" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dll\canlib32.dll" />
+    <Content Include="dll\canlibCLSNET.dll" />
+    <Content Include="dll\capldll.dll" />
+    <Content Include="dll\ControlCAN.dll" />
+    <Content Include="dll\ControlCAN_A.dll" />
+    <Content Include="dll\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="dll\irisdll.dll" />
+    <Content Include="dll\irisflash.dll" />
+    <Content Include="dll\kernel32.dll" />
+    <Content Include="dll\kvrlib.dll" />
+    <Content Include="dll\kvrlibCLSNET.dll" />
+    <Content Include="dll\libxml2.dll" />
+    <Content Include="dll\NPIOVe-0.dll" />
+    <Content Include="dll\NPIOVe.dll" />
+    <Content Include="dll\NPOI.dll" />
+    <Content Include="dll\NPOI.OOXML.dll" />
+    <Content Include="dll\NPOI.OpenXml4Net.dll" />
+    <Content Include="dll\NPOI.OpenXmlFormats.dll" />
+    <Content Include="dll\ucrtbased.dll" />
+    <Content Include="dll\vcruntime140d.dll" />
+    <Content Include="dll\vxlapi.dll" />
+    <Content Include="dll\vxlapi64.dll" />
+    <Content Include="dll\vxlapi_NET.dll" />
+    <Content Include="dll\zlib1.dll" />
+    <Content Include="driver\Kvaser\canlib32.dll" />
+    <Content Include="driver\Kvaser\canlibCLSNET.dll" />
+    <Content Include="driver\Kvaser\irisdll.dll" />
+    <Content Include="driver\Kvaser\irisflash.dll" />
+    <Content Include="driver\USBCAN\ControlCAN.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\CAN232.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\CANDTU_NET.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\CANDTU_WIFI.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\CANETE.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\CANET_TCP.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\CANWIFI_TCP.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\CANWIFI_UDP.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\gisadll.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\gpcidll.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\isa5420.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\PC104C2.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\PC104CAN.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\PCI5121.dll" />
+    <Content Include="driver\USBCAN\kerneldlls\usbcan.dll" />
+    <Content Include="driver\VN1600\vxlapi.dll" />
+    <Content Include="driver\VN1600\vxlapi.h" />
+    <Content Include="driver\VN1600\vxlapi64.dll" />
+    <Content Include="driver\VN1600\vxlapi_NET.dll" />
+    <Content Include="driver\VN1600\vxlapi_NET.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
