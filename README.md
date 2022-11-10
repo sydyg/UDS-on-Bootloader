@@ -10,5 +10,6 @@
 ## 总结
 本项目提供了一个演示demo，供开发者学习使用。
 要实现具体的功能，还需要一些配置的工作，可以联系作者支持。
+支持定制化开发，已为某ADAS企业开发该上位机，稳定运行，需要的可联系。
 微信：sydygys。
 这里有开发教程：https://www.ind4.net/#/HomePage/CourseDetail?navType=Curriculum&courseId=3204
