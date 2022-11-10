@@ -16,9 +16,6 @@ E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机2\UDS上位机\bin\D
 E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\bin\Debug\UDS上位机.exe.config
 E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\bin\Debug\UDS上位机.exe
 E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\bin\Debug\UDS上位机.pdb
-E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\bin\Debug\canlibCLSNET.dll
-E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\bin\Debug\kvrlibCLSNET.dll
-E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\bin\Debug\vxlapi_NET.dll
 E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.csproj.AssemblyReference.cache
 E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.csproj.SuggestedBindingRedirects.cache
 E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.Form2.resources

@@ -101,50 +101,15 @@ namespace UDS上位机
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return 0;
                 }
-                if (Form2.uiDevicePara.CANDeviceType == "USBCAN2EU")
-                {
-                    UInt32 baud;
-                    baud = (UInt32)(Form2.uiDevicePara.CANBaudRate == "500K" ? 0x060007 : 0x1C0008);
-                    byte[] Abaud = new byte[4] { (byte)(baud & 0xff), (byte)((baud >> 8) & 0xff), (byte)((baud >> 16) & 0xff), (byte)((baud >> 24) & 0xff) };
-                    //fixed (void* ptr = &Abaud[0])
-                    {
 
-                        //byte[] Abaud = new byte[4] { (byte)(baud>>24 & 0xff), (byte)((baud >> 16) & 0xff), (byte)((baud >> 8) & 0xff), (byte)((baud) & 0xff) };
-
-                        if (USBCAN.VCI_SetReference(Form2.USBCANDevicetype, 0, 0, 0, ref Abaud[0]) != 1)
-                        {
-
-                            MessageBox.Show("设置波特率错误!", "错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                            USBCAN.VCI_CloseDevice(Form2.USBCANDevicetype, 0);
-                            return 0;
-                        }
-                    }
-                    //设置滤波
-                    //Driver_CANalyst.Filter.ExtFrame = 1;
-                    //Driver_CANalyst.Filter.Start = 0;
-                    //Driver_CANalyst.Filter.End = 0x7fffffff;
-                    //fixed (void* ptr = &Driver_CANalyst.Filter)
-                    //{
-                    //    if (Driver_CANalyst.VCI_SetReference(Form2.USBCANDevicetype, 0, 0, 1, ptr) != 1)
-                    //    {
-
-                    //        MessageBox.Show("设置滤波失败!", "错误", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    //        Driver_CANalyst.VCI_CloseDevice(Form2.USBCANDevicetype, 0);
-                    //        return 0;
-                    //    }
-                    //}
-
-                }
                 //else
                 {
                     //2.初始化设备CAN参数
                     VCI_INIT_CONFIG config = new VCI_INIT_CONFIG();
                     config.AccCode = 0;//unchecked((uint)Form2.ACCCodeNum << 3);//设置验收码unchecked((uint)(0x18D00000<<3))
-                    config.AccMask = 0xffffffff;//Form2.MaskNum << 3;//设置屏蔽码（0：相关、1：无关）
-                    config.Timing0 = (byte)(Form2.uiDevicePara.CANBaudRate == "250K" ? 0x01 : 0x00);
-                    config.Timing1 = 0x1C;
+                    config.AccMask = 0xffffffff;
                     config.Filter = (byte)Form2.CANFrameType;//帧类型
-                    config.Mode = 0;//正常工作模式
+                    config.Mode = 1;
                     InitFlag = USBCAN.VCI_InitCAN(Form2.USBCANDevicetype, 0, (uint)(Form2.uiDevicePara.CANChanel == "CAN1" ? 0 : 1), ref config);
                     if (1 == InitFlag)
                     {
@@ -156,18 +121,6 @@ namespace UDS上位机
                                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         return 0;
                     }
-                }
-
-                //3.启动CAN卡
-                if (0 == USBCAN.VCI_StartCAN(Form2.USBCANDevicetype, 0, (uint)(Form2.uiDevicePara.CANChanel == "CAN1" ? 0 : 1)))
-                {
-                    MessageBox.Show("启动CAN卡失败,请检查设备设备参数设置是否正确", "错误",
-                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    return 0;
-                }
-                else
-                {
-                    ret = 1;
                 }
                 USBCAN.USBCANRxThread = new Thread(new ThreadStart(USBCAN.USBCANRXThreadFun));
                 //Console.WriteLine("RXThread Starting..............");
@@ -1287,113 +1240,7 @@ namespace UDS上位机
         unsafe public static int DealRespose(ref VCI_CAN_OBJ RCANMsg, ECUConfigInfo ECUConfig, int ServerType)
         {
 
-            //未收到应答，等待
-            int i = 100;//500
-                        //未收到应答，等待10*500 =5S
-                        //首次未收到报文
-            if (RCANMsg.ID == 0)
-            {
-                do
-                {
-                    WaitForTimeOut(5);
-                    RCANMsg = CANAPI.WaitCANMessage(ECUConfig.ReponseID, 50);
-                    if (RCANMsg.ID == ECUConfig.ReponseID)//收到了报文
-                        break;
-                    if (i-- < 0)
-                    {
-                        //Console.Write("请求:{0:x}h,超时\r\n", ServerType);
-                        Program.form2.textBox3.Text += string.Format("请求:{0:x}h,超时\r\n", ServerType);
-                        return 0;
-                    }
-                } while (true);
-            }
-            //对首次或本函数里面收到的报文进行处理
-            fixed (VCI_CAN_OBJ* pCANMsg = &RCANMsg)
-            {
-                int time = 120;//1000
-                do
-                {
-                    //收到正响应
-                    if ((RCANMsg.ID != 0) && ((((pCANMsg->Data[0] & 0xf0) == 0x10) && (pCANMsg->Data[2] == (ServerType + 0x40))) || pCANMsg->Data[1] == (ServerType + 0x40)))//收到肯定响应
-                    {
-                        ////Console.Write("ServerType:{1:x},ResposeID = {0:x},请求成功!\r\n", RCANMsg.ID, ServerType);
-                        // Program.form2.textBox3.Text += string.Format("ServerType:{1:x},ResposeID = {0:x},请求成功!\r\r\n", RCANMsg.ID, ServerType);
-                        return 1;
-                    }
-                    //收到否定响应,10 7f 的bug排除
-                    else if ((RCANMsg.ID != 0) && ((pCANMsg->Data[0] & 0xf0) == 0x0) && (pCANMsg->Data[1] == 0x7f && pCANMsg->Data[3] != 0x78))
-                    {
-                        if (pCANMsg->Data[2] != (ServerType))//不是本次请求的否定响应
-                        {
-                            RCANMsg = CANAPI.WaitCANMessage(ECUConfig.ReponseID, 20);//50
-                            continue;
-                        }
 
-                        // //Console.Write("ServerType:{2:x},ResposeID = {0:x},NRC = {1:x}，请求失败!\r\n", RCANMsg.ID, pCANMsg->Data[3], ServerType);
-                        // Program.form2.textBox3.Text += string.Format("ServerType:{2:x},ResposeID = {0:x},NRC = {1:x}，请求失败!\r\n", RCANMsg.ID, pCANMsg->Data[3], ServerType);
-                        return 0;
-                    }
-                    //延迟响应
-                    else if ((RCANMsg.ID != 0) && pCANMsg->Data[1] == 0x7f && pCANMsg->Data[3] == 0x78)
-                    {
-                        // //Console.Write("延迟响应78h\r\n");
-                        //Program.form2.textBox3.Text.Text += string.Format("延迟响应78h\r\n");
-                        int time1 = 120;//1000
-                        do
-                        {
-                            WaitForTimeOut(40);//20
-                            RCANMsg = CANAPI.WaitCANMessage(ECUConfig.ReponseID, 20);//50
-                            if ((RCANMsg.ID == 0) || ((pCANMsg->Data[1] == 0x7f) && (pCANMsg->Data[3] == 0x78)))//无响应或继续收到延迟响应
-                            {
-
-                                continue;//无响应或继续收到延迟响应
-                            }
-                            else if ((RCANMsg.ID != 0) && ((pCANMsg->Data[1] == 0x7f) && (pCANMsg->Data[3] != 0x78)))
-                            {
-                                ////Console.Write("ServerType:{2:x},ResposeID = {0:x},NRC = {1:x}，请求失败!\r\n", RCANMsg.ID, pCANMsg->Data[3], ServerType);
-                                //Program.form2.textBox3.Text.Text += string.Format("ServerType:{2:x},ResposeID = {0:x},NRC = {1:x}，请求失败!\r\n", RCANMsg.ID, pCANMsg->Data[3], ServerType);
-                                if (pCANMsg->Data[2] != (ServerType + 0x40))//不是本次请求的否定响应
-                                {
-                                    RCANMsg = CANAPI.WaitCANMessage(ECUConfig.ReponseID, 20);//50
-                                    continue;
-                                }
-                                return 0;//收到延迟否定响应
-                            }
-
-                            else if ((RCANMsg.ID != 0) && ((((pCANMsg->Data[0] & 0xf0) == 0x10) && (pCANMsg->Data[2] == (ServerType + 0x40))) || pCANMsg->Data[1] == (ServerType + 0x40)))//收到肯定响应
-                                                                                                                                                                                          //else if ((RCANMsg.ID != 0) && (pCANMsg->Data[1] == (ServerType + 0x40)))//收到肯定响应
-                            {
-                                ////Console.Write("请求ServerType:{1:x},ResposeID = {0:x},成功!\r\n", RCANMsg.ID, ServerType);
-                                //Program.form2.textBox3.Text.Text += string.Format("请求ServerType:{1:x},ResposeID = {0:x},成功!\r\n", RCANMsg.ID, ServerType);
-                                return 1;//收到肯定响应
-                            }
-                            //错误响应
-                            //else if (((RCANMsg.ID != 0) && ((pCANMsg->Data[0] & 0xf0) != 0x10) && ((pCANMsg->Data[1] != 0x7f) || pCANMsg->Data[1] != ServerType + 0x40)))
-                            //else if (((RCANMsg.ID != 0) && ((pCANMsg->Data[1] != 0x7f) && (pCANMsg->Data[1] != (ServerType + 0x40) && pCANMsg->Data[2] != (ServerType + 0x40)))))
-                            else if ((RCANMsg.ID != 0) && ((pCANMsg->Data[1] != 0x7f || pCANMsg->Data[1] != ServerType + 0x40)))
-                            {
-                                //ClearCANBuff();
-                                ////Console.Write("错误应答1:ID={0:x},ServerType={1:x}，ErrorRes={2:x}!\r\n", RCANMsg.ID, ServerType, pCANMsg->Data[1]);
-                                //Program.form2.textBox3.Text.Text += string.Format("错误应答1:ID={0:x},ServerType={1:x}，ErrorRes={2:x}!\r\n", RCANMsg.ID, ServerType, pCANMsg->Data[1]);
-                                continue;
-                            }
-
-                        } while ((time1--) > 0);//未收到或者收到延迟报文，继续循环
-                    }
-                    //错误响应
-                    //else if (((RCANMsg.ID != 0) && ((pCANMsg->Data[0] & 0xf0) != 0x10) && ((pCANMsg->Data[1] != 0x7f) || pCANMsg->Data[1] != ServerType + 0x40)))//收到不正确响应
-                    //else if (((RCANMsg.ID != 0) && ((pCANMsg->Data[1] != 0x7f) && (pCANMsg->Data[1] != (ServerType + 0x40) && pCANMsg->Data[2] != (ServerType + 0x40)))))
-                    else if ((RCANMsg.ID != 0) && ((pCANMsg->Data[1] != 0x7f || pCANMsg->Data[1] != ServerType + 0x40)))
-                    {
-                        //ClearCANBuff();
-                        ////Console.Write("错误应答2:ID={0:x},ServerType={1:x}，ErrorRes={2:x}!\r\n", RCANMsg.ID, ServerType, pCANMsg->Data[1]);
-                        //Program.form2.textBox3.Text.Text += string.Format("错误应答1:ID={0:x},ServerType={1:x}，ErrorRes={2:x}!\r\n", RCANMsg.ID, ServerType, pCANMsg->Data[1]);
-                        WaitForTimeOut(40);
-                        RCANMsg = CANAPI.WaitCANMessage(ECUConfig.ReponseID, 20);
-                        continue;
-                    }
-                } while (time-- > 0);
-            }
             return 0;
         }
         public static void ClearCANBuff()

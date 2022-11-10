@@ -15,65 +15,7 @@ namespace UDS上位机.Driver_.Kvaser
         //打开kvaser
         public static int OpenKvaser()
         {
-            Kvrlib.Status status;
-            Kvrlib.DiscoveryHnd discoveryHandle;
-            String buf = "";
-            Canlib.canInitializeLibrary();
-            Kvrlib.InitializeLibrary();
-            status = Kvrlib.DiscoveryOpen(out discoveryHandle);
-            //Console.WriteLine("{0}",discoveryHandle);
-            if (status.Equals(Kvrlib.Status.OK))
-            {
-                int channel_count;
-                Canlib.canStatus status1;
-                status1 = Canlib.canGetNumberOfChannels(out channel_count);
-                if (!status1.Equals(Canlib.canStatus.canOK))
-                {
-                    //Console.WriteLine("ERROR: canGetNumberOfChannels failed " + status);
-                    return 0;
-                }
-                else
-                {
-                    return 1;
-                }
-            }
-            if (!status.Equals(Kvrlib.Status.OK))
-            {
-                Kvrlib.GetErrorText(status, out buf);
-                //Console.WriteLine("DiscoveryOpen() FAILED - " + buf);
-                return -1;
-            }
-            status = SetupBroadcast(discoveryHandle);
-            if (!status.Equals(Kvrlib.Status.OK))
-            {
-                Kvrlib.GetErrorText(status, out buf);
-                //Console.WriteLine("SetupBroadcast() FAILED - " + buf);
-                return -2;
-            }
 
-            status = Kvrlib.DiscoveryClearDevicesAtExit(true);
-            if (!status.Equals(Kvrlib.Status.OK))
-            {
-                Kvrlib.GetErrorText(status, out buf);
-                //Console.WriteLine("DiscoveryClearDevicesAtExit() FAILED - " + buf);
-                return -4;
-            }
-            status = Kvrlib.DiscoveryClearDevicesAtExit(false);
-            if (!status.Equals(Kvrlib.Status.OK))
-            {
-                Kvrlib.GetErrorText(status, out buf);
-                //Console.WriteLine("DiscoveryClearDevicesAtExit() FAILED - " + buf);
-                return -5;
-            }
-
-            status = Kvrlib.DiscoveryClose(discoveryHandle);
-            if (!status.Equals(Kvrlib.Status.OK))
-            {
-                Kvrlib.GetErrorText(status, out buf);
-                //Console.WriteLine("DiscoveryClose() FAILED - " + buf);
-                return -6;
-            }
-            Kvrlib.UnloadLibrary();
             return 1;
         }
 

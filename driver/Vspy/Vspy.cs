@@ -15,62 +15,7 @@ namespace UDS上位机.Driver_.Vspy
         public static Thread SpyRxThread;// = new Thread(new ThreadStart(SpyRXThread));
         public static int OpenVspy()
         {
-            int iResult;
-            NeoDeviceEx[] ndNeoToOpenex = new NeoDeviceEx[16];	//Struct holding detected hardware information
-            NeoDevice ndNeoToOpen;
-            byte[] bNetwork = new byte[255];    //List of hardware IDs
-            int iNumberOfDevices;   //Number of hardware devices to look for 
-            int iCount;		 //counter
-            byte[] bSN = new byte[6];
-            OptionsNeoEx neoDeviceOption = new OptionsNeoEx();
 
-            int iOpenDeviceType;
-            //check if the port is already open
-            //if (m_bPortOpen == true) return;
-
-            //File NetworkID array
-            for (iCount = 0; iCount < 255; iCount++)
-            {
-                bNetwork[iCount] = Convert.ToByte(iCount);
-            }
-
-            //Set the number of devices to find, for this example look for 16.  This example will only work with the first.
-            iNumberOfDevices = 15;
-
-            //Search for connected hardware
-            //iResult = icsNeoDll.icsneoFindNeoDevices((uint)eHardwareTypes.NEODEVICE_ALL, ref ndNeoToOpen, ref iNumberOfDevices);
-            iResult = icsNeoDll.icsneoFindDevices(ref ndNeoToOpenex[0], ref iNumberOfDevices, 0, 0, ref neoDeviceOption, 0);
-            if (iResult == 0)
-            {
-
-                return 0;
-            }
-
-            if (iNumberOfDevices < 1)
-            {
-
-                return 0;
-            }
-
-            ndNeoToOpen = ndNeoToOpenex[0].neoDevice;
-            //Open the first found device
-            iResult = icsNeoDll.icsneoOpenNeoDevice(ref ndNeoToOpen, ref m_hObject, ref bNetwork[0], 1, 0);
-            if (iResult == 0)
-            {
-                return 0;
-            }
-            //设置参数
-            //1.设置波特率
-            int iBitRateToUse = Form2.uiDevicePara.CANBaudRate == "250K" ? 250000 : 500000;
-            iNetworkID = Form2.uiDevicePara.CANChanel == "CAN1" ? (int)eNETWORK_ID.NETID_HSCAN : (int)eNETWORK_ID.NETID_HSCAN2;
-            iResult = icsNeoDll.icsneoSetBitRate(m_hObject, iBitRateToUse, iNetworkID);
-            if (iResult != 1)
-            {
-                return 0;
-            }
-            //2.设置滤波
-            //Set the device type for later use
-            iOpenDeviceType = ndNeoToOpen.DeviceType;
             //3.启动接收线程
             SpyRxThread = new Thread(new ThreadStart(SpyRXThread));
             //Console.WriteLine("RXThread Starting..............");
