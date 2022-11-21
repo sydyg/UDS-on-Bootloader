@@ -91,6 +91,7 @@ namespace UDS上位机
         public static uint USBCANDevicetype = 4;//ZLG系列USBCAN设备号
         public Form2()
         {
+            Control.CheckForIllegalCrossThreadCalls = false;
             InitializeComponent();
             components = new System.ComponentModel.Container();
             Timer_3E80 = new Timer(this.components);
