@@ -25,3 +25,15 @@ E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上
 E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.csproj.CopyComplete
 E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.exe
 E:\个人资料\IND4\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.pdb
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.csproj.AssemblyReference.cache
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.csproj.SuggestedBindingRedirects.cache
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.Form2.resources
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.Properties.Resources.resources
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.csproj.GenerateResource.cache
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.csproj.CoreCompileInputs.cache
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.exe
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.pdb
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\bin\Debug\UDS上位机.exe.config
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\bin\Debug\UDS上位机.exe
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\bin\Debug\UDS上位机.pdb
+F:\袁帅\ys\创业\创业\汽车电子专业知识输出\5 Bootloader教程\BootLoader\上位机源码\UDS上位机git\obj\Debug\UDS上位机.csproj.CopyComplete

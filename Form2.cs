@@ -81,7 +81,7 @@ namespace UDS上位机
         public static int startStatus = 0;
         public static ECUConfigInfo[] ECUConfigArray;//ECU配置信息的数组，最大40
         public static UI_DevicePara uiDevicePara = new UI_DevicePara { CANDeviceType = "USBCAN2EU", CANBaudRate = "500K", CANChanel = "CAN1" };
-        public static ECUConfigInfo CurrentECUConfig;//选中的ECU的BT配置信息
+        public static ECUConfigInfo CurrentECUConfig = new ECUConfigInfo() { ECUName = "ECU", RequestID = 0x127, ReponseID = 0x128, Mask = 0x400400 };//选中的ECU的BT配置信息
         public static System.Windows.Forms.Timer Timer_WaitTimeOut;//延时定时器
         public static uint TimerWaitTimeout = 1;//超时标志置1
         public static uint TimerWaitTimeOutCount = 0;//时间计数置0
@@ -92,6 +92,11 @@ namespace UDS上位机
         public Form2()
         {
             InitializeComponent();
+            components = new System.ComponentModel.Container();
+            Timer_3E80 = new Timer(this.components);
+            Timer_3E80.Enabled = false;
+            Timer_3E80.Interval = 2000;
+            Timer_3E80.Tick += new EventHandler(Timer3E80_Tick);
         }
         public void WritetoMsg(string msg)
         {
@@ -258,6 +263,13 @@ namespace UDS上位机
             else
                 MessageBox.Show("设备未打开");
             DeviceOpen = false;
+        }
+        private void Timer3E80_Tick(object sender, EventArgs e)
+        {
+            byte[] data3e = new byte[] { 0x02, 0x3E, 0x80 };
+            //while (Mutex3E80 != 0) ;//添加自旋锁
+            CANAPI.Output(CurrentECUConfig.FuncID, ref data3e, (uint)data3e.Length, CurrentECUConfig);
+
         }
         //APP
         private void button1_Click(object sender, EventArgs e)
