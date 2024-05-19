@@ -9,11 +9,9 @@
 实现了设备启动、关闭、CAN报文接收、CAN报文发送等功能。
 ## 总结
 本项目提供了一个演示demo，供开发者学习使用。
-要实现具体的功能，还需要一些配置的工作，可以付费获取配置。
-![1701155964513](https://github.com/sydyg/UDS-on-Bootloader/assets/24352068/5a4ebc89-b17c-41e1-abbf-5d51f5953aa2)
-
-## 定制开发，可以联系微信：sydygys。
-这里有开发教程：https://www.ind4.net/#/HomePage/CourseDetail?navType=Curriculum&courseId=3204
+## 作者微信：sydygys。
+可以自行学习开发教程：https://www.ind4.net/#/HomePage/CourseDetail?navType=Curriculum&courseId=3204。
+有问题可以加作者微信。
 ## 支持定制化开发，已为某ADAS企业开发该上位机，稳定运行，需要的可联系。
 ![image](https://user-images.githubusercontent.com/24352068/201505142-1090c2e7-e928-43e8-aec0-361bafd601b0.png)
 还有很多别的工具，比如Excel2DBC工具、实车路由测试工具、标定和故障码读取工具等，也可以开发，有需要的朋友可以联系。
